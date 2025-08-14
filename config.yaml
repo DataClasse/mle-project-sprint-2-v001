@@ -1,0 +1,231 @@
+# Конфигурация MLflow сервера
+mlflow:
+  tracking_server_host: "127.0.0.1"
+  tracking_server_port: 5000
+  experiment_name: "real_estate_price_prediction"
+  model_name: "real_estate_baseline_model"
+  registry_store_uri: "postgresql://mlflow:mlflow@localhost:5432/mlflow"
+  backend_store_uri: "postgresql://mlflow:mlflow@localhost:5432/mlflow"
+  default_artifact_root: "s3://mlflow-artifacts"
+  # Настройки автологирования для XGBoost
+  autolog:
+    xgboost:
+      importance_types: ["weight", "gain"]
+      log_input_examples: true
+      log_model_signatures: true
+      model_format: "json"
+    enabled: true
+
+train:
+  test_size: 0.2
+  random_state: 42
+  shuffle: true
+
+model:
+  name: "XGBRegressor"
+  params:
+    n_estimators: 1000
+    max_depth: 6
+    learning_rate: 0.1
+    subsample: 0.8
+    colsample_bytree: 0.8
+    random_state: 42
+    eval_metric: "rmse"
+    objective: "reg:squarederror"
+    tree_method: "hist"  # CPU оптимизация для XGBoost 1.6.2
+    n_jobs: -1
+    # GPU параметры (если доступны)
+    gpu_params:
+      enabled: false
+      gpu_id: 0
+      tree_method: "gpu_hist"
+  store_path: "models/"
+
+# Настройки предобработки данных
+preprocessing:
+  features:
+    target_column: "price"
+    numerical_features:
+      - "floor"
+      - "kitchen_area"
+      - "living_area"
+      - "total_area"
+      - "build_year"
+      - "latitude"
+      - "longitude"
+      - "ceiling_height"
+      - "flats_count"
+      - "floors_total"
+    categorical_numeric_features:
+      - "rooms"
+      - "building_type"
+    boolean_features:
+      - "is_apartment"
+      - "studio"
+      - "has_elevator"
+    drop_columns: ["id", "building_id"]
+  # Настройки оптимизации памяти pandas
+  memory_optimization:
+    enabled: true
+    dtype_mapping:
+      rooms: "category"
+      building_type: "category"
+      floor: "int16"
+      floors_total: "int16"
+      flats_count: "int32"
+      build_year: "int16"
+      is_apartment: "bool"
+      studio: "bool"
+      has_elevator: "bool"
+
+# Настройки sklearn Pipeline
+pipeline:
+  enabled: true
+  prevent_data_leakage: true
+  steps:
+    - name: "manual_featgen"
+      type: "preprocessor"
+      transformer: "ColumnTransformer"
+    - name: "model"
+      type: "estimator"
+      estimator: "XGBRegressor"
+  # Настройки для предотвращения data leakage
+  data_leakage_prevention:
+    use_pipeline: true
+    separate_preprocessing: false
+    cross_validation_in_pipeline: true
+
+# Настройки Feature Selection
+feature_selection:
+  enabled: true
+  method: "combined"  # combined, sfs, feature_importance
+  combined_approach:
+    feature_importance_threshold: 0.01
+    max_features: 20
+    sfs_k_features: 15
+  sequential_feature_selection:
+    direction: "forward"  # forward, backward
+    k_features: 15
+    scoring: "neg_root_mean_squared_error"
+    cv: 3
+    n_jobs: -1
+
+# Метрики оценки
+scoring:
+  primary_metrics:
+    - "r2"
+    - "rmse"
+    - "mae"
+  secondary_metrics:
+    - "mape"
+    - "explained_variance"
+    - "median_absolute_error"
+    - "max_error"
+  thresholds:
+    r2_min: 0.7
+    rmse_max: 1000000
+    mae_max: 500000
+    mape_max: 25.0
+
+# Настройки обучения
+training:
+  early_stopping_rounds: 50
+  verbose: false
+  use_gpu: false
+  max_time: 3600
+  # Настройки для XGBoost 1.6.2
+  xgboost_compatibility:
+    version: "1.6.2"
+    tree_method: "hist"
+    device: "cpu"
+
+# Настройки артефактов
+artifacts:
+  model: true
+  metrics: true
+  features: true
+  plots:
+    feature_importance: true
+    residuals_plot: true
+    actual_vs_predicted: true
+    dpi: 300
+
+# Настройки сохранения
+saving:
+  artifacts_dir: "fs_assets"
+  models_dir: "models"
+  cv_results_dir: "cv_results"
+  timestamp_format: "%Y%m%d_%H%M%S"
+  file_formats:
+    model: "json"
+    metrics: "json"
+    features: "txt"
+    plots: "png"
+
+# Настройки логирования
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/mlflow_registration.log"
+
+# Настройки EDA для недвижимости
+# eda:
+#   target_analysis: true
+#   feature_correlations: true
+#   geographical_analysis: true
+#   price_distribution: true
+#   area_analysis: true
+#   building_type_analysis: true
+#   outlier_detection: false
+#   data_insights:
+#     avg_price: 14777790
+#     median_price: 11500000
+#     price_range: [5200000, 151958896]
+#     moscow_coverage: 98.7  # % точек в пределах Москвы
+#     zero_living_area_pct: 11.9  # % студий и комнат без отдельной жилой зоны
+#     zero_kitchen_area_pct: 6.8  # % кухонь-ниш
+
+# Настройки мониторинга
+monitoring:
+  track_metrics: true
+  track_parameters: true
+  track_artifacts: true
+  track_tags: true
+
+# Настройки автоматизации
+automation:
+  run_naming: "baseline_model_improvement_{timestamp}"
+  data_paths:
+    initial_data: "data/initial_data_set.csv"
+    output_dir: "data/outputs"
+
+# Настройки comprehensive evaluation
+evaluation:
+  comprehensive: true
+  cross_validation:
+    cv_folds: 5
+    scoring_metrics:
+      - "neg_root_mean_squared_error"
+      - "neg_mean_absolute_error"
+      - "r2"
+      - "mape"
+    return_train_score: true
+    n_jobs: -1
+  overfitting_analysis:
+    enabled: true
+    threshold_percentage: 10.0
+  feature_importance_analysis:
+    enabled: true
+    top_features: 10
+  prediction_statistics:
+    enabled: true
+    include_residuals: true
+
+# Настройки error handling
+error_handling:
+  enabled: true
+  detailed_errors: true
+  graceful_fallback: true
+  log_errors: true
+  user_friendly_messages: true
+

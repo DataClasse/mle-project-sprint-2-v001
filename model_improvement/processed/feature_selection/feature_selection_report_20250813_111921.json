@@ -1,0 +1,90 @@
+{
+  "timestamp": "20250813_111921",
+  "baseline": {
+    "rmse": 4015083.5470240684,
+    "r2": 0.8885103625211964,
+    "mae": 2293305.977824259,
+    "cv_rmse": 4273170.156776387,
+    "n_features": 22
+  },
+  "experiment_1_sfs": {
+    "rmse": 4006746.950033491,
+    "r2": 0.888972858134946,
+    "mae": 2291893.7709165835,
+    "cv_rmse": 4259854.573009469,
+    "n_features": 18,
+    "selected_features": [
+      "floor",
+      "rooms",
+      "is_apartment",
+      "studio",
+      "total_area",
+      "build_year",
+      "building_type",
+      "latitude",
+      "longitude",
+      "ceiling_height",
+      "flats_count",
+      "floors_total",
+      "has_elevator",
+      "kitchen_to_total_ratio",
+      "living_to_total_ratio",
+      "floor_ratio",
+      "area_per_room",
+      "distance_from_center"
+    ],
+    "method": "SFS_improved"
+  },
+  "experiment_2_feature_importance": {
+    "rmse": 4048386.074303455,
+    "r2": 0.8866532232365324,
+    "n_features": 18,
+    "selected_features": [
+      "total_area",
+      "distance_from_center",
+      "ceiling_height",
+      "total_area_sq",
+      "longitude",
+      "latitude",
+      "has_elevator",
+      "build_year",
+      "building_type",
+      "floors_total",
+      "flats_count",
+      "is_apartment",
+      "living_to_total_ratio",
+      "area_per_room",
+      "rooms",
+      "floor_ratio",
+      "floor",
+      "kitchen_area"
+    ],
+    "method": "XGB_feature_importance_top_18"
+  },
+  "experiment_3_combined": {
+    "rmse": 3993660.627932365,
+    "r2": 0.8896969189556179,
+    "mae": 2293677.5977980355,
+    "cv_rmse": 4252944.058484138,
+    "n_features": 16,
+    "selected_features": [
+      "total_area",
+      "distance_from_center",
+      "ceiling_height",
+      "total_area_sq",
+      "has_elevator",
+      "longitude",
+      "latitude",
+      "build_year",
+      "building_type",
+      "floors_total",
+      "flats_count",
+      "living_to_total_ratio",
+      "area_per_room",
+      "rooms",
+      "floor_ratio",
+      "kitchen_to_total_ratio"
+    ],
+    "method": "Combined_FI20_SFS_k16"
+  }
+}

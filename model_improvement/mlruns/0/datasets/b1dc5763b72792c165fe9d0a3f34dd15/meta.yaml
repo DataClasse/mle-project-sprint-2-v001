@@ -1,0 +1,9 @@
+digest: f2995683
+name: dataset
+profile: '{"features_shape": [800, 10], "features_size": 8000, "features_nbytes":
+  32000}'
+schema: '{"mlflow_tensorspec": {"features": "[{\"type\": \"tensor\", \"tensor-spec\":
+  {\"dtype\": \"float32\", \"shape\": [-1, 10]}}]", "targets": null}}'
+source: '{"tags": {"mlflow.user": "mle-user", "mlflow.source.name": "test_xgboost_mlflow.py",
+  "mlflow.source.type": "LOCAL", "mlflow.source.git.commit": "620ad52fb3f99f215c920f08bc3a60b34e68eb52"}}'
+source_type: code

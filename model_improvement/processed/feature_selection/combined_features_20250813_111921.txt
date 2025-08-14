@@ -1,0 +1,16 @@
+total_area
+distance_from_center
+ceiling_height
+total_area_sq
+has_elevator
+longitude
+latitude
+build_year
+building_type
+floors_total
+flats_count
+living_to_total_ratio
+area_per_room
+rooms
+floor_ratio
+kitchen_to_total_ratio
