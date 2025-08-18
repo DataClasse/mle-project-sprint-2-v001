@@ -1,0 +1,43 @@
+# Исключаем все файлы данных
+data/*
+!data/.gitkeep
+
+# Исключаем модели
+models/*
+!models/.gitkeep
+
+# Исключаем результаты
+cv_results/*
+!cv_results/.gitkeep
+
+# Исключаем логи
+logs/*
+!logs/.gitkeep
+
+# Исключаем кэш Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Исключаем временные файлы
+*.tmp
+*.temp
+*.log
+
+# Исключаем MLflow runs
+mlruns/
+
+# Исключаем переменные окружения
+.env
+
+# Исключаем IDE файлы
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Исключаем системные файлы
+.DS_Store
+Thumbs.db
