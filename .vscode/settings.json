@@ -1,0 +1,21 @@
+{
+    "files.readonlyFromPermissions": false,
+    "security.workspace.trust.enabled": true,
+    "security.workspace.trust.untrustedFiles": "open",
+    "editor.readOnly": false,
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.enablePreviewFromQuickOpen": false,
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/**": true,
+        "**/__pycache__/**": true,
+        "**/.pytest_cache/**": true,
+        "**/.mypy_cache/**": true,
+        "**/.venv/**": true,
+        "**/venv/**": true,
+        "**/logs/**": true,
+        "**/tmp/**": true,
+        "**/temp/**": true
+    }
+}

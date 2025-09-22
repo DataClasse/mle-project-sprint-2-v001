@@ -1,0 +1,21 @@
+mlflow:
+  # Основные настройки
+  experiment_name: "baseline_model_improvement_REPP"
+  tracking_server_host: "127.0.0.1"
+  tracking_server_port: 5000
+  model_name: "price_prediction_model"
+
+environment:
+  random_state: 42
+  n_jobs: -1
+  test_size: 0.25
+  cv_folds: 3
+
+# Пути к файлам
+paths:
+  data: "../data/initial_data_set.csv"
+  env: "../.env"
+  plots: "plots/"
+  cache: "cache/"
+  cv_results: "cv_results/"
+  baseline_file: "cv_results/stage_1_baseline_cat.json"
